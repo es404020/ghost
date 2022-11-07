@@ -3,6 +3,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "lil-gui";
 import { MeshStandardMaterial } from "three";
+import {FontLoader} from 'three/examples/jsm/loaders/FontLoader';
+import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry"
 
 /**
  * Base
@@ -20,8 +22,35 @@ scene.fog = fog;
 /**
  * Textures
  */
+
+ const fontLoader = new FontLoader()
 const textureLoader = new THREE.TextureLoader();
 
+fontLoader.load(
+    '/fonts/helvetiker_bold.typeface.json',
+    (font)=>{
+      const textGeomerty = new TextGeometry(
+          'Jesus is alive',
+          {
+              font:font,
+              size:0.3,
+              height:0.3,
+              curveSegments:5,
+              bevelEnabled:true,
+              bevelThickness:0.03,
+              bevelSize:0.02,
+              bevelOffset:0,
+              bevelSegments:5,
+            
+          }
+      )
+      textGeomerty.center();
+
+      const textMaterial = new THREE.MeshStandardMaterial();
+      const text= new THREE.Mesh(textGeomerty,textMaterial);
+      text.position.y= 3.5 + 0.5;
+      scene.add(text);
+        });
 const doorColorTexture = textureLoader.load("/textures/door/color.jpg");
 const doorAlphaTexture = textureLoader.load("/textures/door/alpha.jpg");
 const doorAmbientOcclusionTexture = textureLoader.load(

@@ -5,7 +5,9 @@ import * as dat from "lil-gui";
 import { MeshStandardMaterial } from "three";
 import {FontLoader} from 'three/examples/jsm/loaders/FontLoader';
 import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry"
+import gsap from 'gsap'
 
+console.log(gsap.timeline())
 /**
  * Base
  */
@@ -27,31 +29,7 @@ scene.fog = fog;
  const fontLoader = new FontLoader()
 const textureLoader = new THREE.TextureLoader();
 
-fontLoader.load(
-    '/fonts/helvetiker_bold.typeface.json',
-    (font)=>{
-      const textGeomerty = new TextGeometry(
-          'Moon Walk',
-          {
-              font:font,
-              size:0.3,
-              height:0.3,
-              curveSegments:5,
-              bevelEnabled:true,
-              bevelThickness:0.03,
-              bevelSize:0.02,
-              bevelOffset:0,
-              bevelSegments:5,
-            
-          }
-      )
-      textGeomerty.center();
 
-      const textMaterial = new THREE.MeshStandardMaterial();
-      const text= new THREE.Mesh(textGeomerty,textMaterial);
-      text.position.y= 3.5 + 0.5;
-      scene.add(text);
-        });
 const doorColorTexture = textureLoader.load("/textures/door/color.jpg");
 const doorAlphaTexture = textureLoader.load("/textures/door/alpha.jpg");
 const doorAmbientOcclusionTexture = textureLoader.load(
@@ -292,9 +270,49 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.x = 4;
-camera.position.y = 2;
-camera.position.z = 9;
+//camera.position.x = 4;
+camera.position.y = 18;
+//camera.position.z = 9;
+fontLoader.load(
+    '/fonts/helvetiker_bold.typeface.json',
+    (font)=>{
+      const textGeomerty = new TextGeometry(
+          'Made by OLA',
+          {
+              font:font,
+              size:0.3,
+              height:0.3,
+              curveSegments:5,
+              bevelEnabled:true,
+              bevelThickness:0.03,
+              bevelSize:0.02,
+              bevelOffset:0,
+              bevelSegments:5,
+            
+          }
+      )
+      textGeomerty.center();
+
+      const textMaterial = new THREE.MeshStandardMaterial();
+      const text= new THREE.Mesh(textGeomerty,textMaterial);
+     text.position.y= -1;
+    text.position.z= 3.5 + 0.5;
+    
+
+    gsap.timeline()
+//.from(camera.position, {y:19 *0.5,duration:2})
+.to(camera.position, {y:8,duration:5})
+.to(camera.position, { x: 0, z:10,duration:2 })
+.to(camera.position, { y: 5, x:3,duration:2 })
+.to(camera.position, { y: 2, duration:2 })
+.to(text.position,{y:3.5 + 0.5,duration:1})
+.to(text.position,{x:0,z:0,y:3.8,duration:1})
+      scene.add(text);
+        });
+
+// gui.add(camera.position, "x").min(0).max(45).step(1).name('x');
+// gui.add(camera.position, "y").min(0).max(45).step(1).name('y');
+// gui.add(camera.position, "z").min(0).max(45).step(1).name('z');
 scene.add(camera);
 
 // Controls
@@ -350,6 +368,8 @@ ghost3.shadow.camera.far = 7;
 /**
  * Animate
  */
+
+ //.to(camera.position, { x: 5, y: 5,delay:3 });
 const clock = new THREE.Clock();
 
 const tick = () => {
@@ -370,6 +390,8 @@ const tick = () => {
   ghost3.position.z = Math.sin(ghostAngle3) * Math.sin(ghostAngle3 * 0.6);
   ghost3.position.y = Math.sin(elapsedTime * 4) + Math.sin(elapsedTime * 2.5);
   // Update controls
+
+
 
   // floor.rotation.x=elapsedTime * 0.15;
   //camera.position.x+=Math.sin(camera.rotationy)*3;

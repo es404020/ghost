@@ -30,7 +30,7 @@ fontLoader.load(
     '/fonts/helvetiker_bold.typeface.json',
     (font)=>{
       const textGeomerty = new TextGeometry(
-          'Jesus is alive',
+          'Moon Walk',
           {
               font:font,
               size:0.3,
@@ -341,9 +341,10 @@ ghost3.shadow.mapSize.width = 256;
 ghost3.shadow.mapSize.height = 256;
 ghost3.shadow.camera.far = 7;
 
-gui.add(camera.position, "x").min(0).max(100).step(2);
-gui.add(camera.position, "y").min(1).max(100).step(2);
-gui.add(camera.position, "z").min(1).max(100).step(2);
+
+// gui.add(camera.position, "x").min(0).max(100).step(2);
+// gui.add(camera.position, "y").min(1).max(100).step(2);
+// gui.add(camera.position, "z").min(1).max(100).step(2);
 
 /**
  * Animate
@@ -383,3 +384,50 @@ const tick = () => {
 };
 
 tick();
+function setCookie(c_name,value,exdays)
+{
+    var exdate=new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+    document.cookie=c_name + "=" + c_value;
+}
+
+function getCookie(c_name)
+{
+    var i,x,y,ARRcookies=document.cookie.split(";");
+    for (i=0;i<ARRcookies.length;i++)
+    {
+      x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+      y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+      x=x.replace(/^\s+|\s+$/g,"");
+      if (x==c_name)
+        {
+        return unescape(y);
+        }
+      }
+}
+
+var song = document.getElementsByTagName('audio')[0];
+var played = false;
+var tillPlayed = getCookie('timePlayed');
+function update()
+{
+    
+    if(!played){
+        if(tillPlayed){
+        song.currentTime = tillPlayed;
+        song.volume=0.1;
+        song.play();
+        played = true;
+        }
+        else {
+                song.play();
+                played = true;
+        }
+    }
+
+    else {
+    setCookie('timePlayed', song.currentTime);
+    }
+}
+setInterval(update,1000);

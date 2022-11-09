@@ -78,7 +78,31 @@ grassRoughnessTexture.wrapT = THREE.RepeatWrapping;
  */
 // Temporary sphere
 //walls
+const particleGeomerty = new THREE.BufferGeometry();
+const count = 15000;
+const positions = new Float32Array(count * 3);
+const velocity = new Float32Array(count * 3);
+for (let index = 0; index < count; index++) {
+   positions[index]=(Math.random() - 0.5) * 20;
+    
+}
+particleGeomerty.setAttribute(
+    'position',new THREE.BufferAttribute(positions,3)
+    
+)
+// particleGeomerty.setAttribute(
+//     'velocity',new THREE.BufferAttribute(positions,3)
+    
+// )
 
+const particalMaterial = new THREE.PointsMaterial();
+particalMaterial.size=0.02;
+particalMaterial.sizeAttenuation = true;
+
+const particles = new THREE.Points(
+    particleGeomerty,particalMaterial
+)
+scene.add(particles)
 const house = new THREE.Group();
 
 const walls = new THREE.Mesh(
